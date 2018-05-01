@@ -1,5 +1,7 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -9,12 +11,14 @@ import java.math.BigDecimal;
 
 public class Cliente implements Serializable {
 
+    @SerializedName("id")
     private Integer idCliente;
     private String cpf;
     private BigDecimal pontuacao;
     private String senha;
     private String nome;
     private String email;
+
 
     public Integer getIdCliente() {
         return idCliente;

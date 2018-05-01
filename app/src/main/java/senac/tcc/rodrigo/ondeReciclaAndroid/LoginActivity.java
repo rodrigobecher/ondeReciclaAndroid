@@ -32,10 +32,17 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.MenuCliente;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.WsRest.ClienteTask;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.WsRest.ClienteTaskLogin;
 import senac.tcc.rodrigo.onderecicla.R;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Cliente;
 
@@ -195,16 +202,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Cliente cliente = new Cliente();
             cliente.setEmail(email);
             cliente.setSenha(password);
-
-            if(cliente.getEmail().equals("")){
-                Intent intent = new Intent(LoginActivity.this, activity_empresa.class);
+            Gson gson = new Gson();
+            String stringJson = gson.toJson(cliente);
+            ClienteTaskLogin clienteTask = new ClienteTaskLogin(LoginActivity.this, stringJson);
+            try {
+                cliente = clienteTask.execute().get();
+            } catch (InterruptedException e) {
+                Toast.makeText(this, "Tivemos um problema, tente novamente.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                startActivity(intent);
+            } catch (ExecutionException e) {
+                Toast.makeText(this, "Tivemos um problema, tente novamente.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+            if(cliente != null){
+                Intent intent = new Intent(LoginActivity.this, MenuCliente.class);
                 intent.putExtra("usuario", cliente);
                 startActivity(intent);
 
 
                 SharedPreferences shared = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
                 SharedPreferences.Editor editor = shared.edit();
-                editor.putString("email", cliente.getEmail());
+                editor.putInt("id", cliente.getIdCliente());
                 editor.commit();
             }else{
                 alertNovoUsuario(cliente);
@@ -216,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void alertNovoUsuario(final Cliente cliente) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 this);
-        final AlertDialog.Builder builder1 = builder.setMessage("Usuário não cadastrado. Deseja cadastrar usuário?")
+        final AlertDialog.Builder builder1 = builder.setMessage("Usuário incorreto ou não cadastrado. Deseja cadastrar usuário?")
                 .setCancelable(false)
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override

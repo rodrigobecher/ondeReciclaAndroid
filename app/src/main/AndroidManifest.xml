@@ -18,21 +18,18 @@
         android:theme="@style/AppTheme">
         <activity android:name="senac.tcc.rodrigo.ondeReciclaAndroid.MainActivity" />
         <activity android:name="senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.listaEmpresa" />
-        <activity android:name="senac.tcc.rodrigo.ondeReciclaAndroid.activity_empresa">
-
-        </activity>
+        <activity android:name="senac.tcc.rodrigo.ondeReciclaAndroid.activity_empresa"></activity>
         <activity
             android:name="senac.tcc.rodrigo.ondeReciclaAndroid.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="senac.tcc.rodrigo.ondeReciclaAndroid.cadastrarCliente">
-
-        </activity>
+        <activity android:name="senac.tcc.rodrigo.ondeReciclaAndroid.cadastrarCliente"></activity>
+        <activity android:name="senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.MenuCliente"></activity>
     </application>
 
 </manifest>

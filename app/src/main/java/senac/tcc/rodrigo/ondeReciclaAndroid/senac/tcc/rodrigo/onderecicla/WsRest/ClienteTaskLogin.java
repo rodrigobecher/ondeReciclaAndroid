@@ -1,5 +1,6 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.WsRest;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -20,6 +21,7 @@ public class ClienteTaskLogin extends AsyncTask<Object, Object, Cliente> {
 
     private Context context;
     private String json;
+    private ProgressDialog dialog;
 
     public ClienteTaskLogin(Context context, String json) {
         this.context = context;
@@ -27,10 +29,17 @@ public class ClienteTaskLogin extends AsyncTask<Object, Object, Cliente> {
     }
 
     @Override
+    protected void onPreExecute(){
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Carregando...");
+        dialog.show();
+    }
+
+    @Override
     protected Cliente doInBackground(Object... objects) {
         StringBuilder resposta = new StringBuilder();
         try {
-            URL url = new URL("http://192.168.0.6:8081/clientes/validaCliente");
+            URL url = new URL("https://frozen-spire-43188.herokuapp.com/clientes/validaCliente");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("content-type", "application/json");
@@ -43,7 +52,7 @@ public class ClienteTaskLogin extends AsyncTask<Object, Object, Cliente> {
             Scanner scanner = new Scanner(connection.getInputStream());
 
             while (scanner.hasNextLine()) {
-                resposta.append(scanner.next());
+                resposta.append(scanner.nextLine());
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -59,6 +68,7 @@ public class ClienteTaskLogin extends AsyncTask<Object, Object, Cliente> {
 
     @Override
     protected void onPostExecute(Cliente c) {
+        dialog.dismiss();
         super.onPostExecute(c);
     }
 }

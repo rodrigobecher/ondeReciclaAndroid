@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -12,14 +13,29 @@ import java.util.List;
 import senac.tcc.rodrigo.onderecicla.R;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Empresa;
 
-public class EmpresaAdapter extends ArrayAdapter{
+public class EmpresaAdapter extends BaseAdapter{
 
     private Context context;
     private List<Empresa> empresas = null;
+
     public EmpresaAdapter(Context context, List<Empresa> empresas){
-        super(context, 0, empresas);
         this.empresas = empresas;
         this.context = context;
+    }
+
+    @Override
+    public int getCount() {
+        return empresas.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return empresas.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return empresas.get(position).getId();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -26,6 +27,7 @@ import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.
 public class WebClient extends AsyncTask<Object, Object, List<Empresa>>{
 
     private Context context;
+    private ProgressDialog dialog;
 
     public WebClient(Context context) {
         this.context = context;
@@ -33,7 +35,7 @@ public class WebClient extends AsyncTask<Object, Object, List<Empresa>>{
 
     public String post(String json) throws IOException {
         try {
-            URL url = new URL("http://192.168.0.6:8081/clientes");
+            URL url = new URL("https://frozen-spire-43188.herokuapp.com/clientes");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("content-type", "application/json");
@@ -46,7 +48,7 @@ public class WebClient extends AsyncTask<Object, Object, List<Empresa>>{
             connection.connect();
 
             Scanner scanner = new Scanner(connection.getInputStream());
-            String resposta = scanner.next();
+            String resposta = scanner.nextLine();
             return resposta;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -54,12 +56,21 @@ public class WebClient extends AsyncTask<Object, Object, List<Empresa>>{
         return null;
 
     }
+
+    @Override
+    protected void onPreExecute(){
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Carregando...");
+        dialog.show();
+    }
+
+
     @Override
     protected List<Empresa> doInBackground(Object... objects) {
         StringBuilder resposta = new StringBuilder();
 
             try {
-                URL url = new URL("http://192.168.0.6:8081/api/empresas");
+                URL url = new URL("https://frozen-spire-43188.herokuapp.com/api/empresas");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Content-type", "application/json");
@@ -87,6 +98,7 @@ public class WebClient extends AsyncTask<Object, Object, List<Empresa>>{
     }
     @Override
     protected void onPostExecute(List<Empresa> e){
+        dialog.dismiss();
 
     }
 }

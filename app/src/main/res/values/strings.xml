@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Onde Recicla</string>
+    <string name="app_name">Onde Coleta</string>
     <string name="action_settings">Settings</string>
 
     <!-- Strings related to login -->
@@ -14,5 +14,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_login">Onde Recicla</string>
+    <string name="title_activity_login">Onde Coleta</string>
 </resources>

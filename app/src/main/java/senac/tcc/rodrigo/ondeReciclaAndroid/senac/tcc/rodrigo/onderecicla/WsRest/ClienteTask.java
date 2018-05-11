@@ -1,5 +1,6 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.WsRest;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -14,10 +15,18 @@ import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.
 public class ClienteTask extends AsyncTask<Object, Object, String >{
     private String json;
     private Context context;
-
+    private ProgressDialog dialog;
     public ClienteTask(String cliente, Context context) {
         this.json = cliente;
         this.context = context;
+
+    }
+
+    @Override
+    protected void onPreExecute(){
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Carregando...");
+        dialog.show();
     }
 
     @Override
@@ -34,6 +43,7 @@ public class ClienteTask extends AsyncTask<Object, Object, String >{
 
     @Override
     protected void onPostExecute(String s) {
+        dialog.dismiss();
         super.onPostExecute(s);
     }
 }

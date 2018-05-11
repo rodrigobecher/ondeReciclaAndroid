@@ -1,8 +1,14 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -29,7 +35,17 @@ public class activity_empresa extends AppCompatActivity {
             e.printStackTrace();
         }
         carregaLista(lista);
+        registerForContextMenu(listaEmpresas);
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo)  {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        final Empresa empresa = (Empresa) listaEmpresas.getItemAtPosition(info.position);
 
+        MenuItem itemMapa = menu.add("Visualizar Mapa");
+        Intent intentMapa = new Intent(Intent.ACTION_VIEW);
+        intentMapa.setData(Uri.parse("geo:0,0?q="+ empresa.getEndereco()));
+        itemMapa.setIntent(intentMapa);
     }
     @Override
     protected void onResume() {

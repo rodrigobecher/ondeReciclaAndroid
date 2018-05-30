@@ -31,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private ImageView img;
     public static final String ARQUIVO_PREFERENCIA = "ArqPreferencia";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +200,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+
             showProgress(true);
             Cliente cliente = new Cliente();
             cliente.setEmail(email);
@@ -217,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
             }
             if(cliente != null){
-                Intent intent = new Intent(LoginActivity.this, MenuCliente.class);
+                Intent intent = new Intent(LoginActivity.this, activity_menu_cliente_deslizante.class);
                 intent.putExtra("usuario", cliente);
                 startActivity(intent);
 
@@ -405,9 +408,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
-
             if (success) {
+                showProgress(false);
+                img.setVisibility(View.VISIBLE);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

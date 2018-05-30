@@ -14,6 +14,13 @@
     tools:context="senac.tcc.rodrigo.ondeReciclaAndroid.LoginActivity">
 
     <!-- Login progress -->
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="262dp"
+        android:layout_height="126dp"
+        android:background="@color/Fundo"
+        app:srcCompat="@drawable/logo" />
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -21,13 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="262dp"
-        android:layout_height="126dp"
-        android:background="@color/Fundo"
-        app:srcCompat="@drawable/logo" />
 
     <ScrollView
         android:layout_width="match_parent"

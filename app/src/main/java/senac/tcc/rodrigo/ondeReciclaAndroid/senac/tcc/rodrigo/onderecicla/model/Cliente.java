@@ -1,5 +1,7 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,10 +11,11 @@ import java.math.BigDecimal;
  * Created by Rodrigo on 02/04/2018.
  */
 
+@JsonIgnoreProperties({"id"})
 public class Cliente implements Serializable {
 
-    @SerializedName("id")
-    private Integer idCliente;
+
+    private Integer id;
     private String cpf;
     private BigDecimal pontuacao;
     private String senha;
@@ -21,11 +24,11 @@ public class Cliente implements Serializable {
 
 
     public Integer getIdCliente() {
-        return idCliente;
+        return id;
     }
 
     public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+        this.id = idCliente;
     }
 
     public String getCpf() {

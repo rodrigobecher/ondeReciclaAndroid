@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TableLayout;
 
@@ -26,6 +27,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import senac.tcc.rodrigo.GridAdapter;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.MenuCliente;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Ranking;
 import senac.tcc.rodrigo.onderecicla.R;
@@ -35,6 +37,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
 
     private ListView listaRanking;
     private RankingAdapter adapter;
+    private GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,12 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
+
+        gridView = (GridView) findViewById(R.id.gridCategorias);
+
+        //GridAdapter gridAdapter = new GridAdapter(this,valores, imagens);
+
+        //gridView.setAdapter(gridAdapter);
 
     }
 

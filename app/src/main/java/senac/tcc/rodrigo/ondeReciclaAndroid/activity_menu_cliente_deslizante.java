@@ -19,9 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-<<<<<<< HEAD
 import android.widget.GridView;
-=======
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -41,10 +39,10 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
 
     private ListView listaRanking;
     private RankingAdapter adapter;
-<<<<<<< HEAD
     private GridView gridView;
     private Cliente cliente;
->>>>>>> b03edf18c5a4eb1869dd8f05aaaeecee055481a6
+    private  int [] imagens;
+    private  String [] valores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +64,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
+
         TextView nome = (TextView) headerView.findViewById(R.id.nome_cliente);
         nome.setText(cliente.getNome());
         TextView email = (TextView) headerView.findViewById(R.id.email_cliente);
@@ -75,13 +74,19 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
+
         tabLayout.setupWithViewPager(viewPager);
 
-        gridView = (GridView) findViewById(R.id.gridCategorias);
 
-        //GridAdapter gridAdapter = new GridAdapter(this,valores, imagens);
+        String[] valores = new String[]{
+                    new String("teste")
+                };
+        imagens = new int[1];
 
-        //gridView.setAdapter(gridAdapter);
+        imagens[0] = 1;
+        //  gridView = (GridView) tabLayout.findViewById(R.id.gridCategorias);
+       // GridAdapter gridAdapter = new GridAdapter(this, valores, imagens);
+       // gridView.setAdapter(gridAdapter);
 
     }
 
@@ -96,7 +101,6 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
            fragments = new ArrayList<Fragment>(2);
            fragments.add(new FragmentCategorias());
            fragments.add(new FragmentRanking());
-
            titles = new ArrayList<String>(2);
            titles.add("Categorias");
            titles.add("Ranking");

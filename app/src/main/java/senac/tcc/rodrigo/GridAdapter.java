@@ -17,13 +17,13 @@ import senac.tcc.rodrigo.onderecicla.R;
 public class GridAdapter extends BaseAdapter {
 
     Context context;
-    private  final String [] valores;
-    private final int [] imagens;
+    private  String [] valores;
+    private  int [] imagens;
 
     View view;
     LayoutInflater layoutInflater;
 
-    public GridAdapter(Context context, String[] valores, int[] imagens) {
+    public GridAdapter(Context context, String[] valores, int imagens[]) {
         this.context = context;
         this.valores = valores;
         this.imagens = imagens;
@@ -46,18 +46,15 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        if (convertView == null){
-            view = new View(context);
-            view = layoutInflater.inflate(R.layout.item_categoria,null);
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageViewCategoria);
-            TextView textView = (TextView) view.findViewById(R.id.textViewCategoria);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_categoria, null);
+        }
+            ImageView imageView = (ImageView) view.findViewById(R.id.foto_categoria);
+            TextView textView = (TextView) view.findViewById(R.id.txtCategoria);
             imageView.setImageResource(imagens[position]);
             textView.setText(valores[position]);
-        }
 
-        return view;
+        return convertView;
 
 
     }

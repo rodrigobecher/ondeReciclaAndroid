@@ -31,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +76,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private ImageView img;
+    private Cliente cliente;
     public static final String ARQUIVO_PREFERENCIA = "ArqPreferencia";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +86,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
+        if((Cliente) getIntent().getSerializableExtra("usuario") != null) {
+            cliente = (Cliente) getIntent().getSerializableExtra("usuario");
+            mEmailView.setText(cliente.getEmail());
+        }
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -95,17 +101,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
+        mProgressView = findViewById(R.id.login_progress);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                mProgressView.setVisibility(View.VISIBLE);
                 attemptLogin();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+
     }
 
     private void populateAutoComplete() {
@@ -163,10 +171,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Reset errors.
+        mProgressView.setVisibility(View.INVISIBLE);
         mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
+        mPasswordView.setError(null);        // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
@@ -198,6 +205,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+
             showProgress(true);
             Cliente cliente = new Cliente();
             cliente.setEmail(email);
@@ -217,7 +225,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
             }
             if(cliente != null){
-                Intent intent = new Intent(LoginActivity.this, MenuCliente.class);
+                Intent intent = new Intent(LoginActivity.this, activity_menu_cliente_deslizante.class);
                 intent.putExtra("usuario", cliente);
                 startActivity(intent);
 
@@ -241,16 +249,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        /*if (cliente.getNome().equals("Rodrigo")) {
-                            Toast.makeText(LoginActivity.this, "Usuário já cadastrado", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {*/
                             Intent intent = new Intent(LoginActivity.this, cadastrarCliente.class);
                             startActivity(intent);
-
-                        //}
                     }
                 }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
                     @Override
@@ -405,9 +405,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
-
             if (success) {
+                showProgress(false);
+                img.setVisibility(View.VISIBLE);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

@@ -24,7 +24,7 @@
         <item>Categorias</item>
         <item>Ranking</item>
     </string-array>
-    <string name="title_activity_pontuacao_usuario">PontuacaoUsuarioActivity</string>
+    <string name="title_activity_pontuacao_usuario">Pontuação Usuário</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

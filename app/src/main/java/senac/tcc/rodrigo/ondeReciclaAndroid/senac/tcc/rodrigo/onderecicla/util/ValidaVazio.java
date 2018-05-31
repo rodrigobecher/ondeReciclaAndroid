@@ -1,18 +1,25 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.util;
 
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Cliente;
+
 public class ValidaVazio {
 
-    public static boolean validaString(String valor) throws Exception {
-        if(valor.isEmpty() || valor.equals("") || valor == ""){
-           throw new Exception("Valor null");
-        }else
-            return true;
-    }
-    public static boolean validaInteiro(Integer valor) throws Exception {
-        if(valor.equals("") || valor == null){
-            throw new Exception("Valor null");
-        }else{
-            return true;
+    private boolean retorno = true;
+
+    public boolean validaString(Cliente cliente) {
+        if(cliente.getNome().length() == 0) {
+            retorno = false;
         }
+        if(cliente.getCpf().length() == 0) {
+            retorno = false;
+        }
+        if(cliente.getEmail().length() == 0){
+            retorno = false;
+        }
+        if(cliente.getSenha().length() == 0) {
+            retorno = false;
+        }
+        return retorno;
     }
+
 }

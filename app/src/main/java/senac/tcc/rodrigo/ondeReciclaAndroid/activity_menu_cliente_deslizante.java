@@ -150,6 +150,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
 
         } else if (id == R.id.nav_alterar) {
             Intent intent = new Intent(activity_menu_cliente_deslizante.this, cadastrarCliente.class);
+            intent.putExtra("usuario", cliente);
             startActivity(intent); //implementar para alterar se ja estiver logado
 
         }

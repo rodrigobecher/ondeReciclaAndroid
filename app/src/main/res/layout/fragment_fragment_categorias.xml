@@ -9,19 +9,23 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <GridLayout
-        android:id="@+id/gridCategorias"
+    <GridView
+        android:id="@+id/gridView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="483dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:columnCount="2"
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:scrollbarStyle="outsideOverlay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-    </GridLayout>
 </android.support.constraint.ConstraintLayout>

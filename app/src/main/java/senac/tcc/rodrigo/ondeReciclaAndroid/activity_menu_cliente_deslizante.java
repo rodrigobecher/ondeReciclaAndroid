@@ -65,11 +65,11 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
 
-        TextView nome = (TextView) headerView.findViewById(R.id.nome_cliente);
+/*        TextView nome = (TextView) headerView.findViewById(R.id.nome_cliente);
         nome.setText(cliente.getNome());
         TextView email = (TextView) headerView.findViewById(R.id.email_cliente);
         email.setText(cliente.getEmail());
-
+*/
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
 
@@ -84,9 +84,13 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
         imagens = new int[1];
 
         imagens[0] = 1;
-        //  gridView = (GridView) tabLayout.findViewById(R.id.gridCategorias);
-       // GridAdapter gridAdapter = new GridAdapter(this, valores, imagens);
-       // gridView.setAdapter(gridAdapter);
+        /*
+        gridView = (GridView) findViewById(R.id.gridView);
+
+
+        GridAdapter gridAdapter = new GridAdapter(this,valores, imagens);
+
+        gridView.setAdapter(gridAdapter);*/
 
     }
 

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import senac.tcc.rodrigo.ondeReciclaAndroid.FragmentCategorias;
 import senac.tcc.rodrigo.onderecicla.R;
 
 /**
@@ -17,18 +18,26 @@ import senac.tcc.rodrigo.onderecicla.R;
 public class GridAdapter extends BaseAdapter {
 
     Context context;
-    private  String [] valores;
-    private  int [] imagens;
+    private  final String [] valores;
+    private final int [] imagens;
 
     View view;
     LayoutInflater layoutInflater;
 
-    public GridAdapter(Context context, String[] valores, int imagens[]) {
+    FragmentCategorias fragmentCategorias;
+
+    public GridAdapter(Context context, String[] valores, int[] imagens) {
         this.context = context;
         this.valores = valores;
         this.imagens = imagens;
     }
 
+/*    public GridAdapter(FragmentCategorias fragmentCategorias, String[] valores, int[] imagens) {
+        this.fragmentCategorias = fragmentCategorias;
+        this.valores = valores;
+        this.imagens = imagens;
+    }
+*/
     @Override
     public int getCount() {
         return valores.length;
@@ -46,15 +55,18 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_categoria, null);
-        }
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (convertView == null){
+            view = new View(context);
+            view = layoutInflater.inflate(R.layout.item_categoria,null);
             ImageView imageView = (ImageView) view.findViewById(R.id.foto_categoria);
             TextView textView = (TextView) view.findViewById(R.id.txtCategoria);
-            imageView.setImageResource(imagens[position]);
+            //imageView.setImageResource(imagens[position]);
             textView.setText(valores[position]);
+        }
 
-        return convertView;
+        return view;
 
 
     }

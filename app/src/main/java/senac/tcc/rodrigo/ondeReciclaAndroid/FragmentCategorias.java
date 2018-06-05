@@ -47,11 +47,15 @@ public class FragmentCategorias extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         String[] valores = new String[]{
-                new String("teste")
+                new String("teste"),
+                new String("teste2"),
+                new String("teste3")
         };
+
         imagens = new int[1];
 
         imagens[0] = 1;
+
 
         View rootView = inflater.inflate(R.layout.fragment_fragment_categorias, container, false);
 

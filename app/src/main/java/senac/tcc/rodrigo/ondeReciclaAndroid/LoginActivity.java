@@ -32,6 +32,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,15 +77,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private ProgressBar login_progress;
     private ImageView img;
     private Cliente cliente;
     public static final String ARQUIVO_PREFERENCIA = "ArqPreferencia";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        img = (ImageView) LoginActivity.this.findViewById(R.id.imageView3);
+        login_progress = (ProgressBar) LoginActivity.this.findViewById(R.id.login_progress);
         populateAutoComplete();
         if((Cliente) getIntent().getSerializableExtra("usuario") != null) {
             cliente = (Cliente) getIntent().getSerializableExtra("usuario");
@@ -107,13 +114,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                showProgress(true);
+                login_progress.setVisibility(View.VISIBLE);
                 attemptLogin();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        login_progress.setVisibility(View.GONE);
     }
 
     private void populateAutoComplete() {
@@ -168,10 +193,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
+
         }
 
         // Reset errors.
-
         mEmailView.setError(null);
         mPasswordView.setError(null);        // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
@@ -205,8 +230,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-
-
             Cliente cliente = new Cliente();
             cliente.setEmail(email);
             cliente.setSenha(password);
@@ -215,6 +238,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             ClienteTaskLogin clienteTask = new ClienteTaskLogin(LoginActivity.this, stringJson);
             try {
                 cliente = clienteTask.execute().get();
+                if(cliente != null ){
+
+                }
             } catch (InterruptedException e) {
                 Toast.makeText(this, "Tivemos um problema, tente novamente.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
@@ -228,13 +254,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent intent = new Intent(LoginActivity.this, activity_menu_cliente_deslizante.class);
                 intent.putExtra("usuario", cliente);
                 startActivity(intent);
-
-
                 SharedPreferences shared = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
                 SharedPreferences.Editor editor = shared.edit();
                 editor.putInt("id", cliente.getIdCliente());
                 editor.commit();
+
             }else{
+                login_progress.setVisibility(View.INVISIBLE);
                 alertNovoUsuario(cliente);
             }
 
@@ -242,7 +268,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
     private void alertNovoUsuario(final Cliente cliente) {
-        mProgressView.setVisibility(View.INVISIBLE);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 this);
         final AlertDialog.Builder builder1 = builder.setMessage("Usuário incorreto ou não cadastrado. Deseja cadastrar usuário?")
@@ -417,8 +443,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            showProgress(false);
+            login_progress.setVisibility(View.INVISIBLE);
         }
+
+
     }
 }
 

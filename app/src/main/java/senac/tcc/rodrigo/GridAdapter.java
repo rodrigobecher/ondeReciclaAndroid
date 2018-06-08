@@ -58,7 +58,7 @@ public class GridAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.item_categoria,null);
             ImageView imageView = (ImageView) view.findViewById(R.id.foto_categoria);
             Glide.with(context)
-                    .load("http://www.weblabor.com.br/wp-content/uploads/2017/01/Pilha.jpg")
+                    .load(categoria.getUrl())
                     .into(imageView);
 
             TextView textView = (TextView) view.findViewById(R.id.txtCategoria);

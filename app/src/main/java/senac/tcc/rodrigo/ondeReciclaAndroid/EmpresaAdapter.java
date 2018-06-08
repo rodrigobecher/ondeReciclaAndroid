@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -46,7 +49,10 @@ public class EmpresaAdapter extends BaseAdapter{
         }
         TextView textViewEmpresa = (TextView) view.findViewById(R.id.nomeEmpresa);
         TextView endereco = (TextView) view.findViewById(R.id.empresaEndereco);
-        //ImageView imagem = (ImageView) view.findViewById(R.id.item_foto);
+        ImageView imagem = (ImageView) view.findViewById(R.id.item_foto);
+        Glide.with(context)
+                .load(empresa.getUrl())
+                .into(imagem);
         textViewEmpresa.setText(empresa.getNome());
         endereco.setText(empresa.getEndereco());
         return view;

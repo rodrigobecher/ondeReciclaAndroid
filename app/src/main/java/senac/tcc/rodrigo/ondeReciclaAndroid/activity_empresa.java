@@ -10,11 +10,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.Retrofit.RetrofitConfig;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.WebClient;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Categoria;
 import senac.tcc.rodrigo.onderecicla.R;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Empresa;
 
@@ -22,20 +28,40 @@ public class activity_empresa extends AppCompatActivity {
 
     private ListView listaEmpresas;
     private EmpresaAdapter adapter;
+    private Categoria categoria;
+    private List<Empresa> lista;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empresa);
-        List<Empresa> lista = null;
-        try {
-            lista = new WebClient(activity_empresa.this).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        progressBar = (ProgressBar) this.findViewById(R.id.empresa_progress);
+        progressBar.setVisibility(View.VISIBLE);
+        if((Categoria) getIntent().getSerializableExtra("categoria")!= null){
+
+            categoria = (Categoria) getIntent().getSerializableExtra("categoria");
+            Call<List<Empresa>> call = new RetrofitConfig().getEmpresaCategoria().buscaEmpresaCategoria(categoria.getId());
+            call.enqueue(new Callback<List<Empresa>>() {
+
+                @Override
+                public void onResponse(Call<List<Empresa>> call, Response<List<Empresa>> response) {
+                    if(response.isSuccessful()){
+                        lista = response.body();
+                        carregaLista(lista);
+                        registerForContextMenu(listaEmpresas);
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Empresa>> call, Throwable t) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            });
         }
-        carregaLista(lista);
-        registerForContextMenu(listaEmpresas);
+
+
+
     }
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo)  {
@@ -50,16 +76,24 @@ public class activity_empresa extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        List<Empresa> lista = null;
-        try {
-            lista = new WebClient(activity_empresa.this).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        carregaLista(lista);
+        categoria = (Categoria) getIntent().getSerializableExtra("categoria");
+        Call<List<Empresa>> call = new RetrofitConfig().getEmpresaCategoria().buscaEmpresaCategoria(categoria.getId());
+        call.enqueue(new Callback<List<Empresa>>() {
 
+            @Override
+            public void onResponse(Call<List<Empresa>> call, Response<List<Empresa>> response) {
+                if(response.isSuccessful()){
+                    lista = response.body();
+                    carregaLista(lista);
+                    registerForContextMenu(listaEmpresas);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Empresa>> call, Throwable t) {
+
+            }
+        });
     }
     @NonNull
     private List<Empresa> carregaLista(List<Empresa> lista) {

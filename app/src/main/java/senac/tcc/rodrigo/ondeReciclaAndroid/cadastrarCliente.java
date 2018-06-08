@@ -42,6 +42,7 @@ public class cadastrarCliente extends AppCompatActivity {
             cliente = (Cliente) getIntent().getSerializableExtra("usuario");
             MontaCliente montaCliente = new MontaCliente(this);
             montaCliente.montaCadastro(cliente);
+
         }
         cadastrar = (Button) findViewById(R.id.cadastrar);
         nome = (EditText) findViewById(R.id.edNome);
@@ -61,38 +62,54 @@ public class cadastrarCliente extends AppCompatActivity {
                     cliente.setSenha(senha.getText().toString());
                     ValidaVazio validaVazio = new ValidaVazio();
                     if(validaVazio.validaString(cliente)){
-                        Gson gson = new Gson();
-                        String stringJson = gson.toJson(cliente);
-                        clienteTask = new ClienteTask(stringJson, cadastrarCliente.this);
-
-                        AlertDialog.Builder alert = new AlertDialog.Builder(cadastrarCliente.this);
-                        alert.setTitle("Política de privacidade");
-                        alert.setMessage(R.string.politica_privacidade);
-
-                        alert.setPositiveButton("Concordo", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                try {
-                                    String resposta = clienteTask.execute().get();
-                                    Intent intent = new Intent(cadastrarCliente.this, LoginActivity.class);
-                                    intent.putExtra("usuario", cliente);
-                                    startActivity(intent);
-                                    finish();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch (ExecutionException e) {
-                                    e.printStackTrace();
-                                }                               //Your action here
+                        if(cliente.getIdCliente() != null){
+                            Gson gson = new Gson();
+                            String stringJson = gson.toJson(cliente);
+                            clienteTask = new ClienteTask(stringJson, cadastrarCliente.this);
+                            try {
+                                String resposta = clienteTask.execute().get();
+                                Intent intent = new Intent(cadastrarCliente.this, LoginActivity.class);
+                                intent.putExtra("usuario", cliente);
+                                startActivity(intent);
+                                finish();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
                             }
-                        });
+                        }
+                        else{
+                            Gson gson = new Gson();
+                            String stringJson = gson.toJson(cliente);
+                            clienteTask = new ClienteTask(stringJson, cadastrarCliente.this);
+                            AlertDialog.Builder alert = new AlertDialog.Builder(cadastrarCliente.this);
+                            alert.setTitle("Política de privacidade");
+                            alert.setMessage(R.string.politica_privacidade);
+                            alert.setPositiveButton("Concordo", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    try {
+                                        String resposta = clienteTask.execute().get();
+                                        Intent intent = new Intent(cadastrarCliente.this, LoginActivity.class);
+                                        intent.putExtra("usuario", cliente);
+                                        startActivity(intent);
+                                        finish();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                    }                               //Your action here
+                                }
+                            });
+                            alert.setNegativeButton("Não concordo",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            Toast.makeText(cadastrarCliente.this, "Você deve concordar com a política de privacidade para se cadastrar", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
 
-                        alert.setNegativeButton("Não concordo",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        Toast.makeText(cadastrarCliente.this, "Você deve concordar com a política de privacidade para se cadastrar", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                            alert.show();
 
-                        alert.show();
+                        }
 
                     }else {
                         Toast.makeText(cadastrarCliente.this, "Campos inválidos", Toast.LENGTH_SHORT).show();

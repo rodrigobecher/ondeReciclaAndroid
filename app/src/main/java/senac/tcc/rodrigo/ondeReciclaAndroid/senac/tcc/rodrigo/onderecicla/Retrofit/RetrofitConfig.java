@@ -18,4 +18,7 @@ public class RetrofitConfig {
             return this.retrofit.create(ClienteService.class);
         }
         public CategoriaService getCategoria(){return this.retrofit.create(CategoriaService.class);}
+        public EmpresaService getEmpresaCategoria(){
+            return this.retrofit.create(EmpresaService.class);
+        }
 }

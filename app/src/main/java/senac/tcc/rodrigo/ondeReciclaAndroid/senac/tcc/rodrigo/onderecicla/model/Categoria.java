@@ -8,6 +8,7 @@ public class Categoria implements Serializable {
 
     private Integer id;
     private String descricao;
+    private String url;
     private List<Residuo> residuo;
 
     public Integer getId() {
@@ -29,5 +30,13 @@ public class Categoria implements Serializable {
 
     public void setResiduo(List<Residuo> residuo) {
         this.residuo = residuo;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

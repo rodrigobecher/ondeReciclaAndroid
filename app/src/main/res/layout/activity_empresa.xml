@@ -6,27 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginTop="30dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     >
-
+    <ProgressBar
+        android:id="@+id/empresa_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025"
+        android:visibility="gone" />
     <ListView
         android:id="@+id/lista_empresas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/Fundo" />
-
-    <Button
-        android:id="@+id/formulario"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:text="+"
-        android:elevation="6dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/fundo"
-        android:textColor="#ffffff "
-        android:textSize="40sp"
-        android:stateListAnimator="@null"/>
 
 </RelativeLayout>

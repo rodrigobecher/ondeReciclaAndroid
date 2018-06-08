@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context="senac.tcc.rodrigo.ondeReciclaAndroid.activity_menu_cliente_deslizante">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,23 +37,15 @@
         app:layout_anchor="@+id/include"
         tools:layout_editor_absoluteY="40dp">
 
-        <android.support.design.widget.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Left" />
 
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Center" />
 
     </android.support.design.widget.TabLayout>
 
     <include
         android:id="@+id/include"
         layout="@layout/content_activity_menu_cliente_deslizante"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteY="match_parent"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="614dp"
+        tools:layout_editor_absoluteY="match_parent" />
 
 </android.support.design.widget.CoordinatorLayout>

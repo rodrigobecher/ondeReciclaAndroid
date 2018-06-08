@@ -21,15 +21,22 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import senac.tcc.rodrigo.GridAdapter;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.MenuCliente;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.Retrofit.RetrofitConfig;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Categoria;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Cliente;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Ranking;
 import senac.tcc.rodrigo.onderecicla.R;
@@ -43,54 +50,59 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
     private Cliente cliente;
     private  int [] imagens;
     private  String [] valores;
+    private List<Categoria> lista;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private Toolbar toolbar;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_cliente_deslizante);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress);
         if((Cliente) getIntent().getSerializableExtra("usuario") != null) {
             cliente = (Cliente) getIntent().getSerializableExtra("usuario");
 
         }
+        progressBar.setVisibility(View.VISIBLE);
+        Call<List<Categoria>> call = new RetrofitConfig().getCategoria().buscaCategorias();
+        call.enqueue(new Callback<List<Categoria>>() {
+            @Override
+            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+                if(response.isSuccessful()){
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+                    toolbar  = (Toolbar) findViewById(R.id.toolbar);
+                    setSupportActionBar(toolbar);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    lista = response.body();
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                            activity_menu_cliente_deslizante.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                    drawer.addDrawerListener(toggle);
+                    toggle.syncState();
+                    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                    navigationView.setNavigationItemSelectedListener(activity_menu_cliente_deslizante.this);
+                    View headerView = navigationView.getHeaderView(0);
+                    viewPager = (ViewPager) findViewById(R.id.viewpager);
+                    viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View headerView = navigationView.getHeaderView(0);
+                    tabLayout = (TabLayout) findViewById(R.id.tablayout);
 
-/*        TextView nome = (TextView) headerView.findViewById(R.id.nome_cliente);
-        nome.setText(cliente.getNome());
-        TextView email = (TextView) headerView.findViewById(R.id.email_cliente);
-        email.setText(cliente.getEmail());
-*/
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
+                    tabLayout.setupWithViewPager(viewPager);
+                }
+            }
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
-
-        tabLayout.setupWithViewPager(viewPager);
-
-
-        String[] valores = new String[]{
-                    new String("teste")
-                };
-        imagens = new int[1];
-
-        imagens[0] = 1;
-        /*
-        gridView = (GridView) findViewById(R.id.gridView);
+            @Override
+            public void onFailure(Call<List<Categoria>> call, Throwable t) {
+                Toast.makeText(activity_menu_cliente_deslizante.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
-        GridAdapter gridAdapter = new GridAdapter(this,valores, imagens);
 
-        gridView.setAdapter(gridAdapter);*/
+
 
     }
 
@@ -103,7 +115,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
            super(fa);
 
            fragments = new ArrayList<Fragment>(2);
-           fragments.add(new FragmentCategorias());
+           fragments.add(new FragmentCategorias(lista));
            fragments.add(new FragmentRanking());
            titles = new ArrayList<String>(2);
            titles.add("Categorias");

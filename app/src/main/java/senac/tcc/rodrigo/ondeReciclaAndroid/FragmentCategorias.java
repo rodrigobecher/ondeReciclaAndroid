@@ -1,15 +1,24 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import senac.tcc.rodrigo.GridAdapter;
-import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Cliente;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.Retrofit.RetrofitConfig;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Categoria;
 import senac.tcc.rodrigo.onderecicla.R;
 
 /**
@@ -17,51 +26,34 @@ import senac.tcc.rodrigo.onderecicla.R;
  */
 public class FragmentCategorias extends Fragment {
     private GridView gridView;
-    private Cliente cliente;
     private  int [] imagens;
+    private View rootView;
     private  String [] valores;
+    private List<Categoria> lista;
 
-    public FragmentCategorias() {
-        // Required empty public constructor
+    @SuppressLint("ValidFragment")
+    public FragmentCategorias(List<Categoria> lista) {
+        this.lista = lista;
+
     }
-/*
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        String[] valores = new String[]{
-                new String("teste")
-        };
-        imagens = new int[1];
+    public FragmentCategorias(){}
 
-        imagens[0] = 1;
-        gridView = (GridView) gridView.findViewById(R.id.gridView);
 
-        GridAdapter gridAdapter = new GridAdapter(this,valores, imagens);
-
-        gridView.setAdapter(gridAdapter);
-    }
-*/
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        String[] valores = new String[]{
-                new String("teste"),
-                new String("teste2"),
-                new String("teste3")
-        };
 
-        imagens = new int[1];
+        return montaView(inflater,container);
+    }
 
-        imagens[0] = 1;
+    public View montaView(LayoutInflater inflater, ViewGroup container){
 
-
-        View rootView = inflater.inflate(R.layout.fragment_fragment_categorias, container, false);
+        rootView = inflater.inflate(R.layout.fragment_fragment_categorias, container, false);
 
         gridView = (GridView) rootView.findViewById(R.id.gridView);
 
-        GridAdapter gridAdapter = new GridAdapter(getContext(),valores, imagens);
+        GridAdapter gridAdapter = new GridAdapter(getContext(),lista);
 
         gridView.setAdapter(gridAdapter);
         return rootView;

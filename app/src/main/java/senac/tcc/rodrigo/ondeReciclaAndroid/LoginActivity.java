@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mProgressView.setVisibility(View.VISIBLE);
+                showProgress(true);
                 attemptLogin();
             }
         });
@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Reset errors.
-        mProgressView.setVisibility(View.INVISIBLE);
+
         mEmailView.setError(null);
         mPasswordView.setError(null);        // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
@@ -206,7 +206,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 
-            showProgress(true);
+
             Cliente cliente = new Cliente();
             cliente.setEmail(email);
             cliente.setSenha(password);
@@ -242,6 +242,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
     private void alertNovoUsuario(final Cliente cliente) {
+        mProgressView.setVisibility(View.INVISIBLE);
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 this);
         final AlertDialog.Builder builder1 = builder.setMessage("Usuário incorreto ou não cadastrado. Deseja cadastrar usuário?")
@@ -382,7 +383,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
+            showProgress(true);
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -406,8 +407,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             if (success) {
-                showProgress(false);
-                img.setVisibility(View.VISIBLE);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

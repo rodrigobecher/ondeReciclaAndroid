@@ -1,8 +1,9 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-class Categoria {
+public class Categoria implements Serializable {
 
 
     private Integer id;

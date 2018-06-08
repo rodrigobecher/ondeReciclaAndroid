@@ -17,4 +17,5 @@ public class RetrofitConfig {
         public ClienteService getPontuacao() {
             return this.retrofit.create(ClienteService.class);
         }
+        public CategoriaService getCategoria(){return this.retrofit.create(CategoriaService.class);}
 }

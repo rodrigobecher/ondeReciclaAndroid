@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -48,8 +49,6 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
     private RankingAdapter adapter;
     private GridView gridView;
     private Cliente cliente;
-    private  int [] imagens;
-    private  String [] valores;
     private List<Categoria> lista;
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -67,12 +66,15 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
 
         }
         progressBar.setVisibility(View.VISIBLE);
+        buscaCategoria();
+    }
+
+    public void buscaCategoria(){
         Call<List<Categoria>> call = new RetrofitConfig().getCategoria().buscaCategorias();
         call.enqueue(new Callback<List<Categoria>>() {
             @Override
             public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
                 if(response.isSuccessful()){
-
                     toolbar  = (Toolbar) findViewById(R.id.toolbar);
                     setSupportActionBar(toolbar);
                     progressBar.setVisibility(View.INVISIBLE);
@@ -85,12 +87,17 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
                     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                     navigationView.setNavigationItemSelectedListener(activity_menu_cliente_deslizante.this);
                     View headerView = navigationView.getHeaderView(0);
+                    TextView nome = (TextView) headerView.findViewById(R.id.nome_cliente);
+                    TextView email = (TextView) headerView.findViewById(R.id.email_cliente);
+                    nome.setText(cliente.getNome());
+                    email.setText(cliente.getEmail());
                     viewPager = (ViewPager) findViewById(R.id.viewpager);
                     viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
 
                     tabLayout = (TabLayout) findViewById(R.id.tablayout);
 
                     tabLayout.setupWithViewPager(viewPager);
+
                 }
             }
 
@@ -99,13 +106,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
                 Toast.makeText(activity_menu_cliente_deslizante.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-
-
     }
-
     private class MyAdapter extends FragmentPagerAdapter{
 
         private final ArrayList<Fragment> fragments;
@@ -115,14 +116,13 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
            super(fa);
 
            fragments = new ArrayList<Fragment>(2);
-           fragments.add(new FragmentCategorias(lista));
+           fragments.add(new FragmentCategorias(lista, activity_menu_cliente_deslizante.this));
            fragments.add(new FragmentRanking());
            titles = new ArrayList<String>(2);
            titles.add("Categorias");
            titles.add("Ranking");
 
         }
-
         @Override
         public Fragment getItem(int position) {
             return fragments.get(position);

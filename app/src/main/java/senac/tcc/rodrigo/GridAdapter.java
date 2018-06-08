@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import senac.tcc.rodrigo.ondeReciclaAndroid.FragmentCategorias;
@@ -22,7 +24,6 @@ public class GridAdapter extends BaseAdapter {
 
     Context context;
     List<Categoria> lista;
-
     View view;
     LayoutInflater layoutInflater;
 
@@ -56,6 +57,10 @@ public class GridAdapter extends BaseAdapter {
             view = new View(context);
             view = layoutInflater.inflate(R.layout.item_categoria,null);
             ImageView imageView = (ImageView) view.findViewById(R.id.foto_categoria);
+            Glide.with(context)
+                    .load("http://www.weblabor.com.br/wp-content/uploads/2017/01/Pilha.jpg")
+                    .into(imageView);
+
             TextView textView = (TextView) view.findViewById(R.id.txtCategoria);
             textView.setText(categoria.getDescricao());
         }

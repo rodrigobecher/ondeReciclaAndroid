@@ -22,8 +22,8 @@
         <activity
             android:name="senac.tcc.rodrigo.ondeReciclaAndroid.activity_menu_cliente_deslizante"
             android:label="Onde Coleta"
-            android:theme="@style/AppTheme.NoActionBar">
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked" android:configChanges="orientation">
         </activity>
         <activity android:name="senac.tcc.rodrigo.ondeReciclaAndroid.LoginActivity">
             <intent-filter>

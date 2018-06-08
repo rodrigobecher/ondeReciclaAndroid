@@ -2,11 +2,14 @@ package senac.tcc.rodrigo.ondeReciclaAndroid;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -26,14 +29,13 @@ import senac.tcc.rodrigo.onderecicla.R;
  */
 public class FragmentCategorias extends Fragment {
     private GridView gridView;
-    private  int [] imagens;
     private View rootView;
-    private  String [] valores;
     private List<Categoria> lista;
-
+    private Context context;
     @SuppressLint("ValidFragment")
-    public FragmentCategorias(List<Categoria> lista) {
+    public FragmentCategorias(List<Categoria> lista, Context context) {
         this.lista = lista;
+        this.context = context;
 
     }
     public FragmentCategorias(){}
@@ -45,6 +47,7 @@ public class FragmentCategorias extends Fragment {
                              Bundle savedInstanceState) {
 
         return montaView(inflater,container);
+
     }
 
     public View montaView(LayoutInflater inflater, ViewGroup container){
@@ -52,10 +55,18 @@ public class FragmentCategorias extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_fragment_categorias, container, false);
 
         gridView = (GridView) rootView.findViewById(R.id.gridView);
-
         GridAdapter gridAdapter = new GridAdapter(getContext(),lista);
 
         gridView.setAdapter(gridAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Categoria categoria = lista.get(position);
+                Intent intent = new Intent(context, activity_empresa.class);
+                intent.putExtra("categoria", categoria);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 

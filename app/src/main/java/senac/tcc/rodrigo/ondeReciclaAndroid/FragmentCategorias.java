@@ -49,7 +49,7 @@ public class FragmentCategorias extends Fragment {
         String[] valores = new String[]{
                 new String("teste"),
                 new String("teste2"),
-                new String("teste3")
+                new String("teste30")
         };
 
         imagens = new int[1];

@@ -1,5 +1,10 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +33,7 @@ public class cadastrarCliente extends AppCompatActivity {
     private EditText email;
     private EditText senha;
     private Cliente cliente;
+    private ClienteTask clienteTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,7 @@ public class cadastrarCliente extends AppCompatActivity {
                     if(cliente == null) {
                         cliente = new Cliente();
                     }
+
                     cliente.setNome(nome.getText().toString());
                     cliente.setCpf(cpf.getText().toString());
                     cliente.setEmail(email.getText().toString());
@@ -56,22 +63,42 @@ public class cadastrarCliente extends AppCompatActivity {
                     if(validaVazio.validaString(cliente)){
                         Gson gson = new Gson();
                         String stringJson = gson.toJson(cliente);
-                        ClienteTask clienteTask = new ClienteTask(stringJson, cadastrarCliente.this);
-                        try {
-                            String resposta = clienteTask.execute().get();
-                            Intent intent = new Intent(cadastrarCliente.this, LoginActivity.class);
-                            intent.putExtra("usuario", cliente);
-                            startActivity(intent);
-                            finish();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
+                        clienteTask = new ClienteTask(stringJson, cadastrarCliente.this);
+
+                        AlertDialog.Builder alert = new AlertDialog.Builder(cadastrarCliente.this);
+                        alert.setTitle("Política de privacidade");
+                        alert.setMessage(R.string.politica_privacidade);
+
+                        alert.setPositiveButton("Concordo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                try {
+                                    String resposta = clienteTask.execute().get();
+                                    Intent intent = new Intent(cadastrarCliente.this, LoginActivity.class);
+                                    intent.putExtra("usuario", cliente);
+                                    startActivity(intent);
+                                    finish();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                }                               //Your action here
+                            }
+                        });
+
+                        alert.setNegativeButton("Não concordo",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        Toast.makeText(cadastrarCliente.this, "Você deve concordar com a política de privacidade para se cadastrar", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                        alert.show();
+
                     }else {
                         Toast.makeText(cadastrarCliente.this, "Campos inválidos", Toast.LENGTH_SHORT).show();
                     }
             }
         });
     }
+
 }

@@ -26,6 +26,37 @@
     </string-array>
     <string name="title_activity_pontuacao_usuario">Pontuação Usuário</string>
 
+    <string name="politica_privacidade">
+     Política de privacidade
+    \n
+    \n
+        Sua privacidade é importante e como empresa, seremos transparentes com relação à coleta, uso e compartilhamento das informações sobre você. Neste documento você poderá compreender quais informações são coletas e o que fazemos com os seus dados armazenados.
+    \n
+    \n
+    Quais informações são coletadas?
+    \n
+        Informações da conta e perfil: Ao logar no aplicativo, as informações coletadas serão as que você fornece através do preenchimento do cadastro. As modificações realizadas no perfil também serão armazenada.
+    Informações sobre os pontos de coletas visitados: Não serão armazenadas as informações referente aos locais buscados e visitados através do aplicativo.
+        Informações sobre o depósito: Serão coletados as informações referente ao depósito, tais como resíduo, quantidade depositada e estabelecimento. Esses dados são coletados para que seja possível realizar o cálculo e determinar a sua pontuação.
+    \n
+    \n
+    Como utilizamos essas informações?
+    \n
+        Os seus dados serão protegidos e somente a equipe do produto Onde Coleta e os estabelecimentos parceiros possuem acesso. Os estabelecimentos parceiros possuem acesso a alguns dados do seu perfil, como nome, CPFcpf e pontuação. Esses dados são disponibilizados para que seja possível identificá-lo no momento do depósito e da troca de pontos, aumentando a segurança e dificultando que outra pessoa possa realizá-los.
+    \n
+    \n
+    Por quanto tempo mantemos suas informações?
+    \n
+        Armazenamos suas informações com segurança., Oo armazenamento dos seus dados serão mantidos até você fazer a exclusão da sua conta.
+    \n
+    \n
+    Mudanças na Política de Segurança
+    \n
+	A política de privacidade poderá sofrer alterações ocasionalmente. Quando isso ocorrer, será alterado nesse espaço e se as alterações forem significativas, será fornecido um aviso destacado através do aplicativo.
+	Sempre encorajamos aos nossos usuários a ler e reler a política de segurança, assim você tem o conhecimento sobre as nossas práticas de segurança da informação e pode ajudar a proteger sua privacidade.
+	Caso você não concorde com qualquer alteração nesta política de privacidade, você precisará parar de usar os Serviços e desativar sua (s) conta (s), conforme descrito acima.
+    </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

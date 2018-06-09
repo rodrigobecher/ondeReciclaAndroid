@@ -45,24 +45,11 @@ public class FragmentCategorias extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        Call<List<Categoria>> call = new RetrofitConfig().getCategoria().buscaCategorias();
-        call.enqueue(new Callback<List<Categoria>>() {
 
-            @Override
-            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
-                if (response.isSuccessful()) {
-                    lista = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Categoria>> call, Throwable t) {
-
-            }
-        });
-            return montaView(inflater, container);
+            return montaView(inflater,container);
 
     }
+
 
     public View montaView(LayoutInflater inflater, ViewGroup container){
 

@@ -57,6 +57,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
     private ProgressBar progressBar;
     private NavigationView navigationView;
     private View headerView;
+    private boolean fazer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +74,14 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
         buscaCategoria();
     }
 
-    public void buscaCategoria(){
+    public void buscaCategoria() {
 
         Call<List<Categoria>> call = new RetrofitConfig().getCategoria().buscaCategorias();
         call.enqueue(new Callback<List<Categoria>>() {
             @Override
             public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
-                if(response.isSuccessful()){
-                    toolbar  = (Toolbar) findViewById(R.id.toolbar);
+                if (response.isSuccessful()) {
+                    toolbar = (Toolbar) findViewById(R.id.toolbar);
                     setSupportActionBar(toolbar);
                     progressBar.setVisibility(View.INVISIBLE);
                     lista = response.body();
@@ -96,42 +97,12 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
                     TextView email = (TextView) headerView.findViewById(R.id.email_cliente);
                     nome.setText(cliente.getNome());
                     email.setText(cliente.getEmail());
-                    viewPager = (ViewPager) findViewById(R.id.viewpager);
-                    viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
-                    tabLayout = (TabLayout) findViewById(R.id.tablayout);
 
-                    tabLayout.setupWithViewPager(viewPager);
+                        viewPager = (ViewPager) findViewById(R.id.viewpager);
+                        viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
+                        tabLayout = (TabLayout) findViewById(R.id.tablayout);
 
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Categoria>> call, Throwable t) {
-
-                Toast.makeText(activity_menu_cliente_deslizante.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-
-
-    private void carregaCategoria(){
-        Call<List<Categoria>> call = new RetrofitConfig().getCategoria().buscaCategorias();
-        call.enqueue(new Callback<List<Categoria>>() {
-
-            @Override
-            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
-                if(response.isSuccessful()) {
-                    lista = response.body();
-                    /*drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                            activity_menu_cliente_deslizante.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                    drawer.addDrawerListener(toggle);
-                    navigationView.setNavigationItemSelectedListener(activity_menu_cliente_deslizante.this);
-                    headerView = navigationView.getHeaderView(0);*/
-                    viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
-                    tabLayout.setupWithViewPager(viewPager);
+                        tabLayout.setupWithViewPager(viewPager);
 
                 }
             }
@@ -142,7 +113,6 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
             }
         });
     }
-
 
     private class MyAdapter extends FragmentPagerAdapter{
 
@@ -153,7 +123,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
            super(fa);
 
            fragments = new ArrayList<Fragment>(2);
-           fragments.add(new FragmentCategorias(lista, activity_menu_cliente_deslizante.this));
+           fragments.add(new FragmentCategorias(lista,activity_menu_cliente_deslizante.this));
            fragments.add(new FragmentRanking());
            titles = new ArrayList<String>(2);
            titles.add("Categorias");

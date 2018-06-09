@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private ProgressBar login_progress;
     private ImageView img;
     private Cliente cliente;
+    SharedPreferences shared;
     public static final String ARQUIVO_PREFERENCIA = "ArqPreferencia";
 
 
@@ -109,7 +110,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
         mProgressView = findViewById(R.id.login_progress);
-
+        shared = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
+        if(shared.getString("email", null) != null) {
+            mEmailView.setText(shared.getString("email", null));
+        }
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -254,9 +258,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent intent = new Intent(LoginActivity.this, activity_menu_cliente_deslizante.class);
                 intent.putExtra("usuario", cliente);
                 startActivity(intent);
-                SharedPreferences shared = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
+                shared = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
                 SharedPreferences.Editor editor = shared.edit();
                 editor.putInt("id", cliente.getIdCliente());
+                editor.putString("email", cliente.getEmail());
                 editor.commit();
 
             }else{
@@ -409,7 +414,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            showProgress(true);
+            login_progress.setVisibility(View.VISIBLE);
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -433,6 +438,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             if (success) {
+                login_progress.setVisibility(View.INVISIBLE);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

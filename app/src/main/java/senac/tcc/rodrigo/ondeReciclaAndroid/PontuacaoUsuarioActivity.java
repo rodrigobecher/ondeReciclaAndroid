@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutionException;
@@ -39,6 +41,7 @@ public class PontuacaoUsuarioActivity extends AppCompatActivity {
     private TextView pontuacao;
     private ImageView imageView2;
     private Button qrcode;
+    private TextView valor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,7 @@ public class PontuacaoUsuarioActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.pontuacao_progress);
         pontuacao = (TextView) findViewById(R.id.pontuacaoId);
         imageView2 = findViewById(R.id.imageView2);
+        valor = (TextView) findViewById(R.id.valor_id);
         setSupportActionBar(toolbar);
         if((Cliente) getIntent().getSerializableExtra("usuario") != null) {
             cliente = (Cliente) getIntent().getSerializableExtra("usuario");
@@ -58,8 +62,10 @@ public class PontuacaoUsuarioActivity extends AppCompatActivity {
                 public void onResponse(Call<Cliente> call, Response<Cliente> response) {
                     if(response.body().getPontuacao() != null) {
                         pontuacao.setText(response.body().getPontuacao().toString());
+                        valor.setText((int) response.body().getValor()+"R$");
                     }else {
                         pontuacao.setText(new BigDecimal(0).toString());
+                        valor.setText(0);
                     }
                     mProgressView.setVisibility(View.INVISIBLE);
                     imageView2.setVisibility(View.VISIBLE);

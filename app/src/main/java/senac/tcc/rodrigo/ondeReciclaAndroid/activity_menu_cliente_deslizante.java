@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -44,7 +45,7 @@ import senac.tcc.rodrigo.onderecicla.R;
 
 public class activity_menu_cliente_deslizante extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private DrawerLayout drawer;
     private ListView listaRanking;
     private RankingAdapter adapter;
     private GridView gridView;
@@ -54,6 +55,8 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private ProgressBar progressBar;
+    private NavigationView navigationView;
+    private View headerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +68,13 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
             cliente = (Cliente) getIntent().getSerializableExtra("usuario");
 
         }
+
         progressBar.setVisibility(View.VISIBLE);
         buscaCategoria();
     }
 
     public void buscaCategoria(){
+
         Call<List<Categoria>> call = new RetrofitConfig().getCategoria().buscaCategorias();
         call.enqueue(new Callback<List<Categoria>>() {
             @Override
@@ -79,21 +84,20 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
                     setSupportActionBar(toolbar);
                     progressBar.setVisibility(View.INVISIBLE);
                     lista = response.body();
-                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                             activity_menu_cliente_deslizante.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
                     drawer.addDrawerListener(toggle);
                     toggle.syncState();
-                    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                    navigationView = (NavigationView) findViewById(R.id.nav_view);
                     navigationView.setNavigationItemSelectedListener(activity_menu_cliente_deslizante.this);
-                    View headerView = navigationView.getHeaderView(0);
+                    headerView = navigationView.getHeaderView(0);
                     TextView nome = (TextView) headerView.findViewById(R.id.nome_cliente);
                     TextView email = (TextView) headerView.findViewById(R.id.email_cliente);
                     nome.setText(cliente.getNome());
                     email.setText(cliente.getEmail());
                     viewPager = (ViewPager) findViewById(R.id.viewpager);
                     viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
-
                     tabLayout = (TabLayout) findViewById(R.id.tablayout);
 
                     tabLayout.setupWithViewPager(viewPager);
@@ -103,10 +107,43 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
 
             @Override
             public void onFailure(Call<List<Categoria>> call, Throwable t) {
+
                 Toast.makeText(activity_menu_cliente_deslizante.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
+
+
+
+    private void carregaCategoria(){
+        Call<List<Categoria>> call = new RetrofitConfig().getCategoria().buscaCategorias();
+        call.enqueue(new Callback<List<Categoria>>() {
+
+            @Override
+            public void onResponse(Call<List<Categoria>> call, Response<List<Categoria>> response) {
+                if(response.isSuccessful()) {
+                    lista = response.body();
+                    /*drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                            activity_menu_cliente_deslizante.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                    drawer.addDrawerListener(toggle);
+                    navigationView.setNavigationItemSelectedListener(activity_menu_cliente_deslizante.this);
+                    headerView = navigationView.getHeaderView(0);*/
+                    viewPager.setAdapter(new MyAdapter(getSupportFragmentManager()));
+                    tabLayout.setupWithViewPager(viewPager);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Categoria>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
     private class MyAdapter extends FragmentPagerAdapter{
 
         private final ArrayList<Fragment> fragments;

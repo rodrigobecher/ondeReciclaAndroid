@@ -159,7 +159,6 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_menu_cliente_deslizante_drawer, menu);
         TextView nome = findViewById(R.id.nome_cliente);
         TextView email = findViewById(R.id.email_cliente);
         return true;
@@ -197,4 +196,5 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

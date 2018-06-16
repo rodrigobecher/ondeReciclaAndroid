@@ -22,16 +22,20 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +44,7 @@ import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.MenuCl
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.Retrofit.RetrofitConfig;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Categoria;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Cliente;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Deposito;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Ranking;
 import senac.tcc.rodrigo.onderecicla.R;
 
@@ -51,28 +56,32 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
     private GridView gridView;
     private Cliente cliente;
     private List<Categoria> lista;
+    private List<Deposito> listaDeRanking;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private ProgressBar progressBar;
     private NavigationView navigationView;
     private View headerView;
+    private TextView texto;
     private boolean fazer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_cliente_deslizante);
-
+        texto = (TextView) findViewById(R.id.texto);
         progressBar = (ProgressBar) findViewById(R.id.progress);
+
         if((Cliente) getIntent().getSerializableExtra("usuario") != null) {
             cliente = (Cliente) getIntent().getSerializableExtra("usuario");
 
         }
-
+        texto.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
-        buscaCategoria();
+        buscaRanking();
     }
+
 
     public void buscaCategoria() {
 
@@ -84,6 +93,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
                     toolbar = (Toolbar) findViewById(R.id.toolbar);
                     setSupportActionBar(toolbar);
                     progressBar.setVisibility(View.INVISIBLE);
+                    texto.setVisibility(View.INVISIBLE);
                     lista = response.body();
                     drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -93,6 +103,12 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
                     navigationView = (NavigationView) findViewById(R.id.nav_view);
                     navigationView.setNavigationItemSelectedListener(activity_menu_cliente_deslizante.this);
                     headerView = navigationView.getHeaderView(0);
+                    ImageView imageView = (ImageView) headerView.findViewById(R.id.foto_cliente);
+                    if(cliente.getNome().contains("Rodrigo")) {
+                        Glide.with(activity_menu_cliente_deslizante.this)
+                                .load("https://scontent.fbnu2-1.fna.fbcdn.net/v/t1.0-1/c0.0.160.160/p160x160/34345933_1511397098972751_2880979296682246144_n.jpg?_nc_cat=0&oh=904f5b37685f2399e788e9882dde1cdc&oe=5BB1D971")
+                                .into(imageView);
+                    }
                     TextView nome = (TextView) headerView.findViewById(R.id.nome_cliente);
                     TextView email = (TextView) headerView.findViewById(R.id.email_cliente);
                     nome.setText(cliente.getNome());
@@ -109,7 +125,25 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
 
             @Override
             public void onFailure(Call<List<Categoria>> call, Throwable t) {
+                Toast.makeText(activity_menu_cliente_deslizante.this, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
+    private void buscaRanking() {
+
+        Call<List<Deposito>> call = new RetrofitConfig().buscaRanking().getRanking();
+        call.enqueue(new Callback<List<Deposito>>() {
+            @Override
+            public void onResponse(Call<List<Deposito>> call, Response<List<Deposito>> response) {
+                if(response.isSuccessful())
+                listaDeRanking = response.body();
+                buscaCategoria();
+            }
+
+            @Override
+            public void onFailure(Call<List<Deposito>> call, Throwable t) {
+                Toast.makeText(activity_menu_cliente_deslizante.this, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -124,7 +158,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
 
            fragments = new ArrayList<Fragment>(2);
            fragments.add(new FragmentCategorias(lista,activity_menu_cliente_deslizante.this));
-           fragments.add(new FragmentRanking());
+           fragments.add(new FragmentRanking(listaDeRanking, activity_menu_cliente_deslizante.this));
            titles = new ArrayList<String>(2);
            titles.add("Categorias");
            titles.add("Ranking");

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Deposito;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Ranking;
 import senac.tcc.rodrigo.onderecicla.R;
 
@@ -19,41 +20,44 @@ import senac.tcc.rodrigo.onderecicla.R;
 public class RankingAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Ranking>rankings = null;
+    private List<Deposito> lista;
 
-    public RankingAdapter(Context context, List<Ranking> rankings){
+    public RankingAdapter(List<Deposito> lista, Context context){
+        this.lista = lista;
          this.context = context;
-         this.rankings = rankings;
     }
 
     @Override
     public int getCount() {
-        return rankings.size();
+        return lista.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return rankings.get(position);
+        return lista.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return rankings.get(position).getId();
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Ranking ranking = rankings.get(position);
+        Deposito deposito = lista.get(position);
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.item_lista_ranking, null);
         }
 
         TextView textViewNome = (TextView) convertView.findViewById(R.id.item_nome);
         TextView textViewPontuacao = (TextView) convertView.findViewById(R.id.item_pontuacao);
-
-        textViewNome.setText(ranking.getNomeCliente());
-        textViewPontuacao.setText((int) ranking.getPontuacao());
-
+        if(deposito.getCliente().getNome()!= null) {
+            textViewNome.setText(deposito.getCliente().getNome());
+        }
+        if(!deposito.getTotalDeposito().equals(0)) {
+            textViewPontuacao.setText(deposito.getTotalDeposito().toString());
+        }
         return convertView;
     }
+
 }

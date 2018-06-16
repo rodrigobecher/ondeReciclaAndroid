@@ -21,4 +21,5 @@ public class RetrofitConfig {
         public EmpresaService getEmpresaCategoria(){
             return this.retrofit.create(EmpresaService.class);
         }
+        public DepositoService buscaRanking(){return this.retrofit.create(DepositoService.class);}
 }

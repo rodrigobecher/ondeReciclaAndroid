@@ -18,6 +18,7 @@ import java.util.List;
 
 import senac.tcc.rodrigo.GridAdapter;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Categoria;
+import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Deposito;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Ranking;
 import senac.tcc.rodrigo.onderecicla.R;
 
@@ -28,11 +29,11 @@ public class FragmentRanking extends Fragment {
 
     private View rootView;
     private ListView listView;
-    private List<Ranking> lista;
+    private List<Deposito> lista;
     private Context context;
 
     @SuppressLint("ValidFragment")
-    public FragmentRanking(List<Ranking> lista, Context context) {
+    public FragmentRanking(List<Deposito> lista, Context context) {
         this.lista = lista;
         this.context = context;
     }
@@ -50,18 +51,17 @@ public class FragmentRanking extends Fragment {
     }
     public View montaView(LayoutInflater inflater, ViewGroup container){
 
-        rootView = inflater.inflate(R.layout.fragment_fragment_categorias, container, false);
+        rootView = inflater.inflate(R.layout.fragment_fragment_ranking2, container, false);
 
-/*        listView = (ListView) rootView.findViewById(R.id.listaRanking);
-        RankingAdapter rankingAdapter = new RankingAdapter(getContext(), lista);
-
+        listView = (ListView) rootView.findViewById(R.id.listaRanking);
+        RankingAdapter rankingAdapter = new RankingAdapter(lista, getContext());
         listView.setAdapter(rankingAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             }
-        });*/
+        });
         return rootView;
     }
 

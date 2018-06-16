@@ -62,7 +62,9 @@ public class PontuacaoUsuarioActivity extends AppCompatActivity {
                 public void onResponse(Call<Cliente> call, Response<Cliente> response) {
                     if(response.body().getPontuacao() != null) {
                         pontuacao.setText(response.body().getPontuacao().toString());
-                        valor.setText((int) response.body().getValor()+"R$");
+                        if(response.body().getValor() > 0) {
+                            valor.setText((int) response.body().getValor() + "R$");
+                        }
                     }else {
                         pontuacao.setText(new BigDecimal(0).toString());
                         valor.setText(0);

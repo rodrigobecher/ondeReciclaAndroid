@@ -24,7 +24,7 @@
         <item>Categorias</item>
         <item>Ranking</item>
     </string-array>
-    <string name="title_activity_pontuacao_usuario">Pontuação Usuário</string>
+    <string name="title_activity_pontuacao_usuario">Sua Pontuação</string>
 
     <string name="politica_privacidade">
      Política de privacidade

@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OndeRecicla.iml" filepath="$PROJECT_DIR$/OndeRecicla.iml" />
+      <module fileurl="file://C:\Users\Christian\Documents\GitHub\ondeReciclaAndroid\OndeRecicla.iml" filepath="C:\Users\Christian\Documents\GitHub\ondeReciclaAndroid\OndeRecicla.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ondeReciclaAndroid.iml" filepath="$PROJECT_DIR$/ondeReciclaAndroid.iml" />
     </modules>
   </component>
 </project>

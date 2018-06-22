@@ -26,6 +26,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -73,11 +75,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
     private View mLoginFormView;
-    private ProgressBar login_progress;
     private ImageView img;
     private Cliente cliente;
+    private ProgressBar progressBar;
+    private Animation anim;
     SharedPreferences shared;
     public static final String ARQUIVO_PREFERENCIA = "ArqPreferencia";
 
@@ -90,8 +92,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         img = (ImageView) LoginActivity.this.findViewById(R.id.imageView3);
-        login_progress = (ProgressBar) LoginActivity.this.findViewById(R.id.login_progress);
+        progressBar = (ProgressBar) findViewById(R.id.login_progress);
+        anim = AnimationUtils.loadAnimation(this,
+                R.anim.rotate);
         populateAutoComplete();
+
+
         if((Cliente) getIntent().getSerializableExtra("usuario") != null) {
             cliente = (Cliente) getIntent().getSerializableExtra("usuario");
             mEmailView.setText(cliente.getEmail());
@@ -107,7 +113,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
-        mProgressView = findViewById(R.id.login_progress);
         shared = getSharedPreferences(ARQUIVO_PREFERENCIA, 0);
         if(shared.getString("email", null) != null) {
             mEmailView.setText(shared.getString("email", null));
@@ -116,7 +121,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                login_progress.setVisibility(View.VISIBLE);
                 attemptLogin();
             }
         });
@@ -127,12 +131,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onResume() {
         super.onResume();
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        progressBar.setVisibility(View.GONE);
 
 
     }
@@ -140,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onStop() {
         super.onStop();
-        login_progress.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     private void populateAutoComplete() {
@@ -227,13 +232,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // form field with an error.
             focusView.requestFocus();
         } else {
-            login_progress.setVisibility(View.VISIBLE);
             Cliente cliente = new Cliente();
             cliente.setEmail(email);
             cliente.setSenha(password);
             Gson gson = new Gson();
             String stringJson = gson.toJson(cliente);
-            ClienteTaskLogin clienteTask = new ClienteTaskLogin(LoginActivity.this, stringJson);
+            ClienteTaskLogin clienteTask = new ClienteTaskLogin(LoginActivity.this, img, anim, stringJson);
             try {
                 cliente = clienteTask.execute().get();
                 if(cliente != null){
@@ -247,7 +251,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     editor.commit();
 
                 }else{
-                    login_progress.setVisibility(View.INVISIBLE);
                     alertNovoUsuario(cliente);
                 }
             } catch (InterruptedException e) {

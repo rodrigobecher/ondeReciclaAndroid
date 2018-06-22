@@ -1,9 +1,13 @@
 package senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.WsRest;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -17,6 +21,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Scanner;
 
+import senac.tcc.rodrigo.ondeReciclaAndroid.LoginActivity;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.WebClient;
 import senac.tcc.rodrigo.ondeReciclaAndroid.senac.tcc.rodrigo.onderecicla.model.Cliente;
 import senac.tcc.rodrigo.onderecicla.R;
@@ -25,16 +30,18 @@ public class ClienteTaskLogin extends AsyncTask<Object, Object, Cliente> {
 
     private Context context;
     private String json;
-    public ClienteTaskLogin(Context context, String json) {
+    private ImageView dialog;
+    private Animation anim;
+    public ClienteTaskLogin(LoginActivity context, ImageView img, Animation animacao, String json) {
+        this.anim = animacao;
+        this.dialog = img;
         this.context = context;
         this.json = json;
     }
 
     @Override
-    protected void onPreExecute(){
-
-
-
+    protected void onPreExecute() {
+        dialog.startAnimation(anim);
     }
 
     @Override
@@ -73,8 +80,7 @@ public class ClienteTaskLogin extends AsyncTask<Object, Object, Cliente> {
 
     @Override
     protected void onPostExecute(Cliente c) {
-        super.onPostExecute(c);
-
+        dialog.clearAnimation();
 
     }
 }

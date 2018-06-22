@@ -2,6 +2,7 @@ package senac.tcc.rodrigo.ondeReciclaAndroid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -19,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -55,6 +58,7 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
     private RankingAdapter adapter;
     private GridView gridView;
     private Cliente cliente;
+    private ImageView img;
     private List<Categoria> lista;
     private List<Deposito> listaDeRanking;
     private ViewPager viewPager;
@@ -64,21 +68,23 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
     private NavigationView navigationView;
     private View headerView;
     private TextView texto;
+    private Animation anim;
     private boolean fazer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_cliente_deslizante);
-        texto = (TextView) findViewById(R.id.texto);
         progressBar = (ProgressBar) findViewById(R.id.progress);
-
+        img = (ImageView) findViewById(R.id.imageView3);
+        anim = AnimationUtils.loadAnimation(this,
+                R.anim.rotate);
         if((Cliente) getIntent().getSerializableExtra("usuario") != null) {
             cliente = (Cliente) getIntent().getSerializableExtra("usuario");
 
         }
-        texto.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        img.startAnimation(anim);
+       // progressBar.setVisibility(View.VISIBLE);
         buscaRanking();
     }
 
@@ -92,8 +98,9 @@ public class activity_menu_cliente_deslizante extends AppCompatActivity
                 if (response.isSuccessful()) {
                     toolbar = (Toolbar) findViewById(R.id.toolbar);
                     setSupportActionBar(toolbar);
-                    progressBar.setVisibility(View.INVISIBLE);
-                    texto.setVisibility(View.INVISIBLE);
+                    //progressBar.setVisibility(View.INVISIBLE);
+                    img.clearAnimation();
+                    img.setVisibility(View.GONE);
                     lista = response.body();
                     drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -10,9 +10,10 @@
 
     <ProgressBar
         android:id="@+id/pontuacao_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:theme="@style/CircularProgress"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
